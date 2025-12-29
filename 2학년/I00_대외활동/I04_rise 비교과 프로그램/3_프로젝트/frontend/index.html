@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="전라남도 AI 관광 추천 서비스 - 당신의 취향에 맞는 남도 여행을 찾아드립니다.">
+    <title>남도여행 | 당신만의 여행을 큐레이션하다</title>
+
+    <link rel="icon" href="/static/images/logo.png">
+    <meta property="og:title" content="남도여행 | 당신만의 여행을 큐레이션하다">
+    <meta property="og:description" content="전라남도 AI 관광 추천 서비스 - 당신의 취향에 맞는 남도 여행을 찾아드립니다.">
+    <meta property="og:image" content="https://jntour.site/static/images/ogtag.png">
+    <meta name="google-adsense-account" content="ca-pub-2355375334646881">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/static/style.css?v=5">
+</head>
+
+<body>
+
+    <header>
+        <div class="header-inner">
+            <a href="#" onclick="goHome()" class="logo">
+                <div class="logo-text">
+                    <h1 id="header_title">남도여행</h1>
+                    <p id="header_subtitle">Curated by AI</p>
+                </div>
+            </a>
+            <div class="header-controls"> <!-- New Container -->
+                <div class="lang-switcher">
+                    <select id="langSelect" onchange="changeLanguage(this.value)">
+                        <option value="ko">한국어</option>
+                        <option value="en">English</option>
+                        <option value="zh">中文</option>
+                        <option value="ja">日本語</option>
+                    </select>
+                </div>
+                <div class="progress-container" id="progressBar"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Screen 0: Start (Hero) -->
+        <section id="screen-start" class="screen active">
+            <div class="hero-container">
+                <div class="hero-grid">
+                    <!-- Text Section (Left) -->
+                    <div class="hero-text">
+                        <span class="hero-badge">Curated by AI</span>
+                        <h2 id="hero_title">취향을 읽는<br>남도 여행의 시작</h2>
+                        <p id="hero_desc">
+                            복잡한 검색은 이제 그만.<br>
+                            AI가 당신의 취향을 분석하여<br>
+                            전라남도의 숨겨진 보석을 찾아드립니다.
+                        </p>
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <span class="stat-num">22</span>
+                                <span class="stat-label">Local Areas</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-num">AI</span>
+                                <span class="stat-label">Curation</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bento Grid Section (Right) -->
+                    <div class="hero-bento">
+                        <!-- Card 1: Survey (Main) -->
+                        <div class="bento-card card-survey"
+                            onclick="setMode('survey', this); document.getElementById('btn_start').click();">
+                            <div class="card-content">
+                                <span class="material-symbols-rounded card-icon">edit_note</span>
+                                <h3 id="card_survey_title">설문 추천</h3>
+                                <p id="card_survey_desc">취향 선택으로<br>딱 맞는 여행지 찾기</p>
+                                <span class="material-symbols-rounded card-arrow">arrow_forward</span>
+                            </div>
+                            <div class="card-bg-shape"></div>
+                        </div>
+
+                        <!-- Card 2: AI Search -->
+                        <div class="bento-card card-search"
+                            onclick="setMode('search', this); document.getElementById('btn_start').click();">
+                            <div class="card-content">
+                                <span class="material-symbols-rounded card-icon">search</span>
+                                <h3 id="card_search_title">AI 검색</h3>
+                                <p id="card_search_desc">자연어로 자유롭게</p>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Chat -->
+                        <div class="bento-card card-chat"
+                            onclick="setMode('chat', this); document.getElementById('btn_start').click();">
+                            <div class="card-content">
+                                <span class="material-symbols-rounded card-icon">forum</span>
+                                <h3 id="card_chat_title">큐레이터</h3>
+                                <p id="card_chat_desc">대화로 추천받기</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hidden Start Button for Logic Compatibility -->
+                <button id="btn_start" onclick="startRecommendation()" style="display: none;"></button>
+            </div>
+        </section>
+
+        <!-- Screen: AI Search -->
+        <section id="screen-search" class="screen">
+            <div class="search-container content-card">
+                <div class="step-header">
+                    <span class="step-label">AI Search</span>
+                    <h2 id="search_title">어떤 여행을 원하세요?</h2>
+                    <p id="search_desc">자연어로 원하는 여행을 설명해주세요</p>
+                </div>
+
+                <div class="search-input-wrapper">
+                    <input type="text" id="searchInput" placeholder="예: 연인과 함께 바다보며 맛있는 해산물 먹고 싶어요"
+                        onkeypress="if(event.key==='Enter') performSemanticSearch()">
+                    <button class="search-btn" onclick="performSemanticSearch()">
+                        <span class="material-symbols-rounded">search</span>
+                    </button>
+                </div>
+
+                <div class="search-examples">
+                    <span class="examples-label" id="search_examples_label">예시:</span>
+                    <button class="example-btn" id="search_ex_1" onclick="setSearchQuery('시원한 계곡에서 힐링하고 싶어')">시원한 계곡에서
+                        힐링</button>
+                    <button class="example-btn" id="search_ex_2" onclick="setSearchQuery('아이들과 체험할 수 있는 곳')">아이들과
+                        체험</button>
+                    <button class="example-btn" id="search_ex_3" onclick="setSearchQuery('역사적인 장소 탐방하고 싶어')">역사
+                        탐방</button>
+                    <button class="example-btn" id="search_ex_4" onclick="setSearchQuery('로맨틱한 야경이 있는 곳')">로맨틱한
+                        야경</button>
+                </div>
+
+                <div id="searchLoading" class="search-loading" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p id="search_loading_text">AI가 검색 중입니다...</p>
+                </div>
+
+                <div id="searchResults" class="search-results"></div>
+
+                <button class="btn-back-home" onclick="goBackToStart()">
+                    <span class="material-symbols-rounded">arrow_back</span> <span id="btn_back_home_text">처음으로</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Screen: AI Chat -->
+        <section id="screen-chat" class="screen">
+            <div class="chat-container content-card">
+                <div class="chat-header">
+                    <button class="btn-back-chat" onclick="goBackToStart()">
+                        <span class="material-symbols-rounded">arrow_back</span>
+                    </button>
+                    <div class="chat-header-info">
+                        <h2 id="chat_header_title">AI 여행 큐레이터</h2>
+                        <p id="chatStatus">전라남도 여행 전문가와 대화하세요</p>
+                    </div>
+                </div>
+
+                <div id="chatMessages" class="chat-messages">
+                    <div class="message assistant">
+                        <span class="message-label">AI 큐레이터</span>
+                        <div class="message-content" id="chat_welcome_msg">
+                            안녕하세요! 저는 전라남도 여행 큐레이터입니다. 🌿<br><br>
+                            어떤 여행을 계획하고 계신가요? 예를 들어:<br>
+                            • "1박 2일 미식 여행 코스 추천해줘"<br>
+                            • "연인과 가기 좋은 야경 명소 알려줘"<br>
+                            • "아이들과 체험할 수 있는 곳은?"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <div class="chat-suggestions">
+                        <button class="suggestion-btn" id="suggest_btn_1"
+                            onclick="sendSuggestion('1박 2일 미식 여행 코스 추천해줘')">미식
+                            여행</button>
+                        <button class="suggestion-btn" id="suggest_btn_2"
+                            onclick="sendSuggestion('연인과 가기 좋은 곳 추천해줘')">연인 여행</button>
+                        <button class="suggestion-btn" id="suggest_btn_3"
+                            onclick="sendSuggestion('힐링할 수 있는 조용한 곳 알려줘')">힐링 여행</button>
+                    </div>
+                    <div class="chat-input-wrapper">
+                        <input type="text" id="chatInput" placeholder="메시지를 입력하세요..."
+                            onkeypress="if(event.key==='Enter') sendChatMessage()">
+                        <button class="chat-send-btn" id="chat_send_btn" onclick="sendChatMessage()">전송</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen 1: Age -->
+        <section id="screen-age" class="screen">
+            <div class="step-header">
+                <span class="step-label">Step 01</span>
+                <h2 id="step_1_title">연령대가 어떻게 되시나요?</h2>
+                <p id="step_1_desc">여행자의 공감대에 맞는 장소를 추천해드려요.</p>
+            </div>
+            <div class="options-grid cols-3" id="ageOptions">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- Screen 2: Group -->
+        <section id="screen-group" class="screen">
+            <div class="step-header">
+                <span class="step-label">Step 02</span>
+                <h2 id="step_2_title">누구와 함께 하시나요?</h2>
+                <p id="step_2_desc">동행에 따라 알맞은 코스를 준비했어요.</p>
+            </div>
+            <div class="options-grid cols-2" id="groupOptions">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- Screen 3: Interest -->
+        <section id="screen-interest" class="screen">
+            <div class="step-header">
+                <span class="step-label">Step 03</span>
+                <h2 id="step_3_title">어떤 여행을 선호하세요?</h2>
+                <p id="step_3_desc">가장 끌리는 키워드를 선택해주세요 (최대 3개)</p>
+            </div>
+            <div class="options-grid" id="interestOptions">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- Screen 4: Season -->
+        <section id="screen-season" class="screen">
+            <div class="step-header">
+                <span class="step-label">Step 04</span>
+                <h2 id="step_4_title">언제 떠나실 계획인가요?</h2>
+                <p id="step_4_desc">그 계절에만 만날 수 있는 특별한 풍경을 알려드릴게요.</p>
+            </div>
+            <div class="options-grid cols-2" id="seasonOptions">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- Screen 5: Loading -->
+        <section id="screen-loading" class="screen">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <h3 id="loading_title">맞춤 여행지를 찾고 있어요</h3>
+                <p id="loading_desc">잠시만 기다려주세요...</p>
+            </div>
+        </section>
+
+        <!-- Screen 6: Result -->
+        <section id="screen-result" class="screen">
+            <div class="step-header">
+                <span class="step-label">Recommendation</span>
+                <h2 id="result_title">당신을 위한 추천 여행지</h2>
+                <p id="resultSummary"></p>
+            </div>
+            <div id="resultCards">
+                <!-- Cards go here -->
+            </div>
+            <button class="btn-restart" id="btn_restart" onclick="restart()">다른 조건으로 다시 찾기</button>
+        </section>
+
+        <!-- Screen 7: Detail -->
+        <section id="screen-detail" class="screen">
+            <div class="detail-header">
+                <button class="btn-back" onclick="backToResults()">←</button>
+                <div class="detail-title">
+                    <h2 id="detailTitle"></h2>
+                </div>
+            </div>
+            <div id="detailContent" class="detail-content">
+                <!-- Content goes here -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Navigation Buttons (Fixed Bottom) -->
+    <div class="nav-buttons" id="navButtons" style="display: none;">
+        <div class="nav-container">
+            <button class="nav-btn secondary" id="prevBtn">이전</button>
+            <button class="nav-btn primary" id="nextBtn" disabled>다음 단계로</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <h2>남도여행</h2>
+                <p>Curated by AI</p>
+                <div style="font-size: 11px; color: #888; margin-top: 4px;">
+                    © 2025 Namdo Tour. All rights reserved.
+                </div>
+            </div>
+            <div class="footer-links">
+                <a href="#">서비스 소개</a>
+                <a href="#">이용약관</a>
+                <a href="#">개인정보처리방침</a>
+                <a href="#">문의하기</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logic -->
+    <script src="/static/translations.js?v=2"></script>
+    <script src="/static/script.js?v=3"></script>
+</body>
+
+</html>

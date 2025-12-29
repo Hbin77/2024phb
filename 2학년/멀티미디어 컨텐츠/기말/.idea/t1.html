@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <style>
+    div {
+    padding: 40px;
+    border: 1px solid #c9a;
+    margin: 20px;
+}
+</style>
+</head>
+<body>
+
+<div id="parent">div 부모 태그
+    <div id="child">div 자식 태그</div>
+</div>
+
+<script>
+    document.getElementById("parent").addEventListener("click", function() {
+    alert("부모 요소 클릭");
+}, true); // 캡처링 모드
+
+    document.getElementById("child").addEventListener("click", function() {
+    alert("자식 요소 클릭");
+}, true); // 캡처링 모드
+</script>
+
+</body>
+</html>

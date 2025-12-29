@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../src/main/resources/templates/styles/style.css">
+    <title>Medi-Story</title>
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <img src="./assets/logo.png" alt="Medi-Story Logo">
+        <h1>Medi-Story</h1>
+        <p>한눈에 알아보는 의료지식</p>
+    </div>
+    <nav class="navbar">
+        <ul>
+            <li><a href="#">질병 백과사전</a></li>
+            <li><a href="#">의약품 정보</a></li>
+            <li><a href="#">진단 및 검사</a></li>
+            <li><a href="#">의료 학습자료</a></li>
+            <li><a href="#">기타메뉴</a></li>
+            <li><button class="login-btn">로그인</button></li>
+            <li><button class="signup-btn">5초 회원가입</button></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <img src="./assets/hero.png" alt="Hero Background" class="hero-image">
+    </section>
+
+    <section class="search-section">
+        <div class="search-content">
+            <h1>MAKE LIFE BETTER!</h1>
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <button onclick="performSearch()" class="search-button">
+                        <img src="./assets/search-icon.png" alt="Search Icon" class="search-icon">
+                    </button>
+                    <input type="text" placeholder="검색어를 입력하세요" id="searchInput">
+                </div>
+            </div>
+            <p>검색 오류 문의 사항 | Language</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature">
+            <h3>북마크 및 즐겨찾기</h3>
+            <p>검색어로 찾은 나만의 지식을 라이브러리에 저장하고 볼 수 있어요!</p>
+        </div>
+        <div class="feature">
+            <h3>키워드 및 카테고리 검색</h3>
+            <p>키워드 및 카테고리 검색을 통해 보다 정밀한 검색이 가능해요!</p>
+        </div>
+        <div class="feature">
+            <h3>인근 응급실 알아보기</h3>
+            <p>인근 응급실의 진료 범위와 수용 인원을 빠르게 확인하세요!</p>
+        </div>
+        <div class="feature">
+            <h3>의료 학습 모드</h3>
+            <p>학습 계획을 세우고 체계적으로 학습할 수 있습니다.</p>
+        </div>
+    </section>
+
+    <section class="developers">
+        <h2>Medi-Story Developer</h2>
+        <div class="developer-features">
+            <div>
+                <img src="./assets/developer_1.png" alt="Community Feature">
+                <p>커뮤니티 활용</p>
+            </div>
+            <div>
+                <img src="./assets/developer_2.png" alt="Reviews">
+                <p>적극적인 리뷰</p>
+            </div>
+            <div>
+                <img src="./assets/developer_3.png" alt="Feedback">
+                <p>솔직한 피드백</p>
+            </div>
+            <div>
+                <img src="./assets/developer_4.png" alt="Keywords">
+                <p>적절한 키워드 입력</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>© Medi-Story 2024 | REFERENCED: NAVER, GOOGLE, 나무위키</p>
+</footer>
+<script src="./scripts/main.js"></script>
+</body>
+</html>
